@@ -6,6 +6,7 @@ import Footer from '../components/footer'
 import man from '../public/man.png'
 
 export default function Home() {
+
   return (
     <div className='container-fluid'>
       <div className='row align-items-center justify-content-center'>

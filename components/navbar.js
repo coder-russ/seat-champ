@@ -5,7 +5,7 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import logo from '../public/logo.png'
 
-export default function Navbar() {
+export default function Navbar({ numberOfItems }) {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark">
       <div className="container-fluid">
@@ -37,8 +37,13 @@ export default function Navbar() {
             </Link>
           </div>
           <div className="p-3">
-            <Link href='/'>
-              <a><FontAwesomeIcon icon={faShoppingCart} size="lg" color="white"/></a>
+            <Link href='/cart' passHref>
+              <a><FontAwesomeIcon icon={faShoppingCart} size="lg" color="white"/>
+                <span className="position-absolute top-10 start-80 translate-middle badge rounded-pill bg-danger">
+                  {numberOfItems}
+                  <span className="visually-hidden">items in cart</span>
+                </span>
+              </a>
             </Link>
           </div>
         </div>

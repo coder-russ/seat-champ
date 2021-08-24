@@ -1,8 +1,21 @@
+import { signIn, signOut, useSession } from 'next-auth/client'
 import axios from 'axios';
 import CardNFL from '../../components/cardNFL'
 
-
 export default function SuperBowl({ teamData }) {
+  const [ session, loading ] = useSession()
+
+  const addToCart = (item) => {
+    axios.post('/api/cart', item)
+  }
+
+  if(!session) {
+    return <>
+    Not signed in <br/>
+    <button onClick={() => signIn()}>Sign in</button>
+    </>
+  }
+
   return (
     <div className='container'>
       <div className='row'>
@@ -11,7 +24,16 @@ export default function SuperBowl({ teamData }) {
           if (price < 100) {
             price += 150;
           }
-          return (<CardNFL key={i} className='col-auto' image={`/${item}.svg`} title={item} description={`$${price.toFixed(2)}`} buttonLink='/' buttonText='Add to cart' />);
+          let obj = {
+            team: item,
+            event: 'Super Bowl',
+            date: '02/20/2022',
+            price: price.toFixed(2),
+            quantity: 1,
+            total: price.toFixed(2),
+            email: session.user.email,
+          }
+          return (<CardNFL key={i} className='col-auto' image={`/${item}.svg`} title={item} description={`$${price.toFixed(2)}`} handleClick={addToCart} item={obj} buttonText='Add to cart' />);
         }
         )}
       </div>
