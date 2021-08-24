@@ -29,8 +29,8 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
         </thead>
         <tbody>
           <>
-          {data.map((item) =>
-            <tr key={item.id}>
+          {data.map((item, i) =>
+            <tr key={i}>
               <td>{item.id}</td>
               <td>{item.team}</td>
               <td>{item.event}</td>

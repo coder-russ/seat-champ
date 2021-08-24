@@ -25,6 +25,7 @@ export default function SuperBowl({ teamData }) {
             price += 150;
           }
           let obj = {
+            id: i,
             team: item,
             event: 'Super Bowl',
             date: '02/20/2022',

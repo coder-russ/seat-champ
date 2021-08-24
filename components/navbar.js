@@ -32,7 +32,7 @@ export default function Navbar({ numberOfItems }) {
         </div>
         <div className="d-flex p-3">
           <div className="p-3">
-            <Link href='/api/auth/signin' passHref>
+            <Link href='/signin' passHref>
               <a><FontAwesomeIcon icon={faUser} size="lg" color="white"/></a>
             </Link>
           </div>
