@@ -6,8 +6,6 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 export default function Page() {
   const [ session, loading ] = useSession()
   const { data, error } = useSWR(session ? `/api/cart/${session.user.email}/true` : null, fetcher)
-  console.log(data);
-
   if (error) return <div>failed to load</div>
   if (!data) return <div>loading...</div>
 

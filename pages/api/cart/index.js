@@ -6,7 +6,6 @@ export default function handler(req, res) {
   if(req.method === 'POST') {
     return postCartItem(req.body)
       .then((data) => {
-        console.log(data);
         res.send(data);
       })
       .catch(console.error);

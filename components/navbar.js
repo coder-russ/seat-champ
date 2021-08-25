@@ -20,16 +20,16 @@ export default function Navbar({ numberOfItems }) {
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav">
             <Link href='/about' passHref>
-              <a className="nav-link p-md-5">About</a>
+              <a className="nav-link p-md-4">About</a>
             </Link>
             <Link href='/events' passHref>
-              <a className="nav-link p-md-5">Events</a>
+              <a className="nav-link p-md-4">Events</a>
             </Link>
             <Link href='/charity' passHref>
-              <a className="nav-link p-md-5">Charity</a>
+              <a className="nav-link p-md-4">Charity Tracker</a>
             </Link>
             <Link href='/faq' passHref>
-              <a className="nav-link p-md-5">FAQ</a>
+              <a className="nav-link p-md-4">FAQ</a>
             </Link>
           </div>
         </div>

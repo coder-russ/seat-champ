@@ -4,13 +4,9 @@ import { signIn, signOut, useSession } from 'next-auth/client'
 
 export default function SuperBowl({ teamData }) {
   const [ session, loading ] = useSession()
-  console.log(session);
 
   const addToCart = (item) => {
     axios.post('/api/cart', item)
-      .then((response) => {
-        console.log(response.data.insertedId);
-      })
   }
 
   if(!session) {
@@ -53,7 +49,6 @@ export async function getStaticProps() {
   const NFC = await bettingMarket.data[0].BettingMarkets.filter((odds) => odds.BettingMarketID === 86057);
   AFC[0].BettingOutcomes.map((team) => {
     if (team.SportsBook.SportsbookID === 19) {
-      console.log(team.Participant);
       teamData[team.Participant] = {
         odds: team.PayoutAmerican,
       }
@@ -61,7 +56,6 @@ export async function getStaticProps() {
   })
   NFC[0].BettingOutcomes.map((team) => {
     if (team.SportsBook.SportsbookID === 19) {
-      console.log(team.Participant);
       teamData[team.Participant] = {
         odds: team.PayoutAmerican,
       }

@@ -6,7 +6,6 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 
  export default function Cart() {
    const [ session, loading ] = useSession()
-   console.log(session);
    const { data, error } = useSWR(session ? `/api/cart/${session.user.email}` : null, fetcher)
 
    const removeItem = (id) => {
@@ -50,7 +49,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
                   <td>{`$${item.price}`}</td>
                   <td>{item.quantity}</td>
                   <td>{item.email}</td>
-                  <button type="button" className="btn btn-danger" style={{backgroundColor: 'red'}} onClick={() => removeItem(item._id.toString())}>Remove</button>
+                  <td><button type="button" className="btn btn-danger" style={{backgroundColor: 'red'}} onClick={() => removeItem(item._id.toString())}>Remove</button></td>
                 </tr>
               )}
               </>
@@ -64,7 +63,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
                   <td></td>
                   <td></td>
                   <td>{`$${data.reduce((a, b) => a + Number(b.price), 0).toFixed(2)}`}</td>
-                  <button type="button" className="btn btn-dark" style={{backgroundColor: 'black'}} onClick={() => handlePurchase(session.user.email)}>Purchase</button>
+                  <td><button type="button" className="btn btn-dark" style={{backgroundColor: 'black'}} onClick={() => handlePurchase(session.user.email)}>Purchase</button></td>
                 </tr>
             </tfoot>
           </table>
