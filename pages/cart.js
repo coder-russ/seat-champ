@@ -18,7 +18,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
       .then((response) => console.log('item deleted', response))
       .catch((err) => console.log('unable to delete', err));
    }
-    if(session && data) {
+    if(session) {
       return (
         <table className="table container">
           <thead>
@@ -35,7 +35,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
           </thead>
           <tbody>
             <>
-            {data.map((item, i) =>
+            {data && data.map((item, i) =>
               <tr key={i}>
                 <td>{item._id.toString()}</td>
                 <td>{item.team}</td>
