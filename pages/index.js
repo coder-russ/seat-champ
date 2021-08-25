@@ -9,10 +9,10 @@ import man from '../public/man.png'
 export default function Home() {
 
   return (
-    <div className='container-fluid'>
+    <div className='container-fluid p-0'>
       <div className='row align-items-center justify-content-center'>
-        <div className='col-4'>
-          <Image src={man} alt='man holding tickets' height='600' width='700' />
+        <div className='col-6'>
+          <Image src={man} alt='man holding tickets' />
         </div>
         <div className='col-6'>
           <h1>Welcome Champ!</h1>
@@ -21,7 +21,9 @@ export default function Home() {
             <button type="button" className="btn btn-dark btn-lg">Buy tickets</button>
           </Link>
         </div>
-        <Footer title='You lose, They win!' description='We like win-wins, all money after we cover our costs will go to charity. Support your team and the underprivileged youth'/>
+        <div className='row'>
+          <Footer title='You lose, They win!' description='We like win-wins, all money after we cover our costs will go to charity. Support your team and the underprivileged youth'/>
+        </div>
       </div>
     </div>
   )

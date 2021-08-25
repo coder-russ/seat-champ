@@ -9,7 +9,7 @@ const fetcher = (url) => fetch(url).then(res => res.json())
 
 export default function Layout({ children}) {
   const [ session, loading ] = useSession()
-  const { data, error } = useSWR(session ? `/api/cart/${session.user.email}` : null, fetcher, { refreshInterval: 500 })
+  const { data, error } = useSWR(session ? `/api/cart/${session.user.email}` : null, fetcher, { refreshInterval: 200 })
 
   // if (error) return <div>failed to load</div>
   // if (!data) return <div>loading...</div>

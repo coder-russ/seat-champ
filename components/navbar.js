@@ -19,13 +19,16 @@ export default function Navbar({ numberOfItems }) {
         </button>
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div className="navbar-nav">
-            <Link href='/' passHref>
+            <Link href='/about' passHref>
               <a className="nav-link p-md-5">About</a>
             </Link>
             <Link href='/events' passHref>
               <a className="nav-link p-md-5">Events</a>
             </Link>
-            <Link href='/' passHref>
+            <Link href='/charity' passHref>
+              <a className="nav-link p-md-5">Charity</a>
+            </Link>
+            <Link href='/faq' passHref>
               <a className="nav-link p-md-5">FAQ</a>
             </Link>
           </div>
