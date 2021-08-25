@@ -7,7 +7,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
  export default function Cart() {
    const [ session, loading ] = useSession()
    console.log(session);
-   const { data, error } = useSWR(session ? `/api/cart/${session.user.email}` : null, fetcher, { refreshInterval: 500 })
+   const { data, error } = useSWR(session ? `/api/cart/${session.user.email}` : null, fetcher)
 
    if (!session) return <> Not signed in <br /> <button onClick={() => signIn()}>Sign in</button></>
    if (error) return <div>failed to load</div>

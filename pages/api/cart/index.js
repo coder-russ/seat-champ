@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 // import { cart } from '../../../data.js'
-import { postCartItem, getCartItems } from '../../../lib/models'
+import { postCartItem } from '../../../lib/models'
 
 export default function handler(req, res) {
   if(req.method === 'POST') {

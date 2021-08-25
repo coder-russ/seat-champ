@@ -29,7 +29,6 @@ export default function SuperBowl({ teamData }) {
             price += 150;
           }
           let obj = {
-            // id: i,
             team: item,
             event: 'Super Bowl',
             date: '02/20/2022',
@@ -37,6 +36,7 @@ export default function SuperBowl({ teamData }) {
             quantity: 1,
             total: price.toFixed(2),
             email: session.user.email,
+            purchased: false,
           }
           return (<CardNFL key={i} className='col-auto' image={`/${item}.svg`} title={item} description={`$${price.toFixed(2)}`} handleClick={addToCart} item={obj} buttonText='Add to cart' />);
         }
