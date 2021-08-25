@@ -1,12 +1,16 @@
-import { signIn, signOut, useSession } from 'next-auth/client'
 import axios from 'axios';
 import CardNFL from '../../components/cardNFL'
+import { signIn, signOut, useSession } from 'next-auth/client'
 
 export default function SuperBowl({ teamData }) {
   const [ session, loading ] = useSession()
+  console.log(session);
 
   const addToCart = (item) => {
     axios.post('/api/cart', item)
+      .then((response) => {
+        console.log(response.data.insertedId);
+      })
   }
 
   if(!session) {
@@ -25,7 +29,7 @@ export default function SuperBowl({ teamData }) {
             price += 150;
           }
           let obj = {
-            id: i,
+            // id: i,
             team: item,
             event: 'Super Bowl',
             date: '02/20/2022',
