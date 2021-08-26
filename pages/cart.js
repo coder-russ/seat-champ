@@ -61,7 +61,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
             </thead>
             <tbody>
               <>
-              {data && data.length > 0 && data.map((item, i) =>
+              {typeof data === 'Array' && data.map((item, i) =>
                 <tr key={i}>
                   <td>{item._id.toString()}</td>
                   <td>{item.team}</td>
@@ -83,7 +83,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td>{data && data.length > 0 && `$${data.reduce((a, b) => a + Number(b.price), 0).toFixed(2)}`}</td>
+                  <td>{typeof data === 'Array' && `$${data.reduce((a, b) => a + Number(b.price), 0).toFixed(2)}`}</td>
                   <td><button type="button" className="btn btn-dark" style={{backgroundColor: 'black'}} onClick={() => handlePurchase(session.user.email)}>Purchase</button></td>
                 </tr>
             </tfoot>
