@@ -1,6 +1,6 @@
 import { useState, Fragment, useEffect } from 'react'
 import { getAllPurchases } from '../lib/models'
-import useSWR from 'swr'
+// import useSWR from 'swr'
 
 const nfc = [
   'Arizona Cardinals',
@@ -51,12 +51,12 @@ const formatter = new Intl.NumberFormat('en-US', {
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
-export default function Charity({ totalSales }) {
+export default function Charity({ totalSales, teamSales }) {
   const [teamOne, setTeamOne] = useState(null);
   const [teamTwo, setTeamTwo] = useState(null);
   const [payout, setPayout] = useState(null);
 
-  const { data, error } = useSWR(teamOne && teamTwo ? `/api/cart/${teamOne}/${teamTwo}/true` : null, fetcher, { refreshInterval: 1000 })
+  // const { data, error } = useSWR(teamOne && teamTwo ? `/api/cart/${teamOne}/${teamTwo}/true` : null, fetcher, { refreshInterval: 1000 })
 
   const handleTeamOne = (event) => {
     setTeamOne(event.target.value);
@@ -66,13 +66,11 @@ export default function Charity({ totalSales }) {
   }
 
   useEffect(() => {
-    if(data && data.length > 0) {
-      let teamOneCount = data[0].length;
-      let teamTwoCount = data[1].length;
-      const total = (teamOneCount + teamTwoCount) * 3000;
-      setPayout(total)
-    }
-  }, [data])
+    let teamOneCount = teamSales[teamOne];
+    let teamTwoCount = teamSales[teamTwo];
+    const total = (teamOneCount + teamTwoCount) * 3000;
+    setPayout(total)
+  }, [teamOne, teamTwo, teamSales])
 
   return (
     <div className='container'>
@@ -104,7 +102,7 @@ export default function Charity({ totalSales }) {
       <br/>
       <p>This amount of money will be donated to charity...</p>
       <br/>
-      {payout && totalSales && <h1 style={{color: '#03fc03'}}>{formatter.format(totalSales - payout)}</h1> }
+      {teamOne && teamTwo && <h1 style={{color: '#03fc03'}}>{formatter.format(totalSales - payout)}</h1> }
     </div>
   );
 };
@@ -112,8 +110,16 @@ export default function Charity({ totalSales }) {
 
 export async function getStaticProps() {
   let totalSales = 0;
+  let teamSales = {};
   const purchases = await getAllPurchases();
-  purchases.map((purchase) => totalSales += Number(purchase.total))
+  purchases.map((purchase) => {
+    totalSales += Number(purchase.total)
+    if(!teamSales[purchase.team]) {
+      teamSales[purchase.team] = 1;
+    } else {
+      teamSales[purchase.team] = teamSales[purchase.team] += 1;
+    }
+  })
 
   if (!totalSales) {
     return {
@@ -122,6 +128,7 @@ export async function getStaticProps() {
   }
 
   return {
-    props: { totalSales }, // will be passed to the page component as props
+    props: { totalSales, teamSales }, // will be passed to the page component as props
+    revalidate: 21600
   }
 }
