@@ -1,11 +1,15 @@
 import axios from 'axios';
 import CardNFL from '../../components/cardNFL'
 import { signIn, signOut, useSession } from 'next-auth/client'
+import CartModal from '../../components/cartModal'
+import { useState } from 'react'
 
 export default function SuperBowl({ teamData }) {
   const [ session, loading ] = useSession()
+  const [modalShow, setModalShow] = useState(false);
 
   const addToCart = (item) => {
+    setModalShow(true);
     axios.post('/api/cart', item)
   }
 
@@ -18,6 +22,7 @@ export default function SuperBowl({ teamData }) {
 
   return (
     <div className='container'>
+      <CartModal show={modalShow} onHide={() => setModalShow(false)}/>
       <div className='row'>
         {Object.keys(teamData).map((item, i) => {
           let price = 6000 / (teamData[item].odds / 100)

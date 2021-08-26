@@ -2,39 +2,42 @@ import { useState, Fragment, useEffect } from 'react'
 import { getAllPurchases } from '../lib/models'
 import useSWR from 'swr'
 
-const teams = [
+const nfc = [
   'Arizona Cardinals',
-  'Chicago Bears',
-  'Green Bay Packers',
-  'New York Giants',
-  'Detroit Lions',
-  'Washington Football Team',
-  'Philadelphia Eagles',
-  'Pittsburgh Steelers',
-  'Los Angeles Rams',
-  'San Francisco 49ers',
-  'Cleveland Browns',
-  'Indianapolis Colts',
-  'Dallas Cowboys',
-  'Kansas City Chiefs',
-  'Los Angeles Chargers',
-  'Denver Broncos',
-  'New York Jets',
-  'New England Patriots',
-  'Las Vegas Raiders',
-  'Tennessee Titans',
-  'Buffalo Bills',
-  'Minnesota Vikings',
   'Atlanta Falcons',
-  'Miami Dolphins',
+  'Carolina Panthers',
+  'Chicago Bears',
+  'Dallas Cowboys',
+  'Detroit Lions',
+  'Green Bay Packers',
+  'Los Angeles Rams',
+  'Minnesota Vikings',
   'New Orleans Saints',
-  'Cincinnati Bengals',
+  'New York Giants',
+  'Philadelphia Eagles',
+  'San Francisco 49ers',
   'Seattle Seahawks',
   'Tampa Bay Buccaneers',
-  'Carolina Panthers',
-  'Jacksonville Jaguars',
+  'Washington Football Team'
+];
+
+const afc = [
   'Baltimore Ravens',
+  'Buffalo Bills',
+  'Cincinnati Bengals',
+  'Cleveland Browns',
+  'Denver Broncos',
   'Houston Texans',
+  'Indianapolis Colts',
+  'Jacksonville Jaguars',
+  'Kansas City Chiefs',
+  'Las Vegas Raiders',
+  'Los Angeles Chargers',
+  'Miami Dolphins',
+  'New England Patriots',
+  'New York Jets',
+  'Pittsburgh Steelers',
+  'Tennessee Titans'
 ];
 
 const formatter = new Intl.NumberFormat('en-US', {
@@ -53,7 +56,7 @@ export default function Charity({ totalSales }) {
   const [teamTwo, setTeamTwo] = useState(null);
   const [payout, setPayout] = useState(null);
 
-  const { data, error } = useSWR(teamOne && teamTwo ? `/api/cart/${teamOne}/${teamTwo}/true` : null, fetcher)
+  const { data, error } = useSWR(teamOne && teamTwo ? `/api/cart/${teamOne}/${teamTwo}/true` : null, fetcher, { refreshInterval: 1000 })
 
   const handleTeamOne = (event) => {
     setTeamOne(event.target.value);
@@ -76,10 +79,11 @@ export default function Charity({ totalSales }) {
       <h1>Charity Tracker</h1>
       <p className='fs-4'>Use the tracker below to estimate the donation amount based on selected teams</p>
       <br/>
-      <p>If this is the Super Bowl matchup...</p>
+      <p className='fs-5'>If this is the Super Bowl matchup...</p>
+      <p className='fs-5'>NFC</p>
       <select className="form-select" aria-label="Default select example" onChange={handleTeamOne}>
         <option defaultValue>Choose team one</option>
-        {teams.map((team, i) =>
+        {nfc.map((team, i) =>
           <Fragment key={i}>
             <option value={team}>{team}</option>
           </Fragment>
@@ -87,9 +91,11 @@ export default function Charity({ totalSales }) {
       </select>
       <br/>
       <p>VS</p>
+      <br/>
+      <p className='fs-5'>AFC</p>
       <select className="form-select" aria-label="Default select example" onChange={handleTeamTwo}>
         <option defaultValue>Choose team two</option>
-        {teams.map((team, i) =>
+        {afc.map((team, i) =>
           <Fragment key={i}>
             <option value={team}>{team}</option>
           </Fragment>

@@ -5,15 +5,16 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Page() {
   const [ session, loading ] = useSession()
-  const { data, error } = useSWR(session ? `/api/cart/${session.user.email}/true` : null, fetcher)
+  const { data, error } = useSWR(session ? `/api/cart/${session.user.email}/true` : null, fetcher, { refreshInterval: 1000 })
   if (error) return <div>failed to load</div>
-  if (!data) return <div>loading...</div>
+  if (!data && session) return <div>loading...</div>
 
   return <>
-    {!session && <>
+    {!session && <div className='container'>
+      <h1>User Profile</h1>
       Not signed in <br/>
       <button onClick={() => signIn()}>Sign in</button>
-    </>}
+    </div>}
     {session && data && <div className='container'>
       Signed in as {session.user.email} <br/>
       <button className='mb-4' onClick={() => signOut()}>Sign out</button>
