@@ -1,23 +1,34 @@
 import useSWR from 'swr'
 import axios from 'axios'
+import { useState } from 'react'
 import { signIn, signOut, useSession } from 'next-auth/client'
+import PurchaseModal from '../components/purchaseModal'
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
  export default function Cart() {
    const [ session, loading ] = useSession()
    const { data, error } = useSWR(session ? `/api/cart/${session.user.email}` : null, fetcher, { refreshInterval: 1000 })
+   const [spinner, setSpinner] = useState(false);
+   const [modalShow, setModalShow] = useState(false);
 
    const removeItem = (id) => {
-     alert('Item Removed')
+     setSpinner(true);
      axios.delete(`/api/cart/${id}`)
-      .then((response) => console.log('item deleted', response))
+      .then((response) => {
+        console.log('item deleted')
+        setTimeout(() => setSpinner(false), 2000);
+      })
       .catch((err) => console.log('unable to delete', err));
     }
 
     const handlePurchase = (email) => {
-      alert('Purchase Complete')
+      setSpinner(true);
       axios.post(`api/cart/${email}`)
+        .then(() => {
+          setSpinner(false);
+          setModalShow(true);
+        })
     }
 
    if (!session) {
@@ -33,6 +44,8 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
     if(session && data) {
       return (
         <div className="container">
+          <PurchaseModal show={modalShow} email={session.user.email} onHide={() => setModalShow(false)}/>
+          {spinner && <div className="spinner-border position-absolute start-50" role="status"><span className="visually-hidden">Loading...</span></div>}
           <h1>Cart</h1>
           <table className="table container">
             <thead>
