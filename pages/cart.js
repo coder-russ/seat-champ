@@ -6,21 +6,29 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 
  export default function Cart() {
    const [ session, loading ] = useSession()
-   const { data, error } = useSWR(session ? `/api/cart/${session.user.email}` : null, fetcher)
+   const { data, error } = useSWR(session ? `/api/cart/${session.user.email}` : null, fetcher, { refreshInterval: 1000 })
 
    const removeItem = (id) => {
+     alert('Item Removed')
      axios.delete(`/api/cart/${id}`)
       .then((response) => console.log('item deleted', response))
       .catch((err) => console.log('unable to delete', err));
     }
 
     const handlePurchase = (email) => {
+      alert('Purchase Complete')
       axios.post(`api/cart/${email}`)
     }
 
-   if (!session) return <> Not signed in <br /> <button onClick={() => signIn()}>Sign in</button></>
+   if (!session) {
+     return <div className='container'>
+       <h1>Cart</h1>
+       Not signed in <br />
+      <button onClick={() => signIn()}>Sign in</button>
+      </div>
+    }
    if (error) return <div>failed to load</div>
-   if (!data) return <div>loading...</div>
+   if (!data && session) return <div>loading...</div>
 
     if(session && data) {
       return (
@@ -62,7 +70,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td>{`$${data.reduce((a, b) => a + Number(b.price), 0).toFixed(2)}`}</td>
+                  <td>{data && data.length > 0 && `$${data.reduce((a, b) => a + Number(b.price), 0).toFixed(2)}`}</td>
                   <td><button type="button" className="btn btn-dark" style={{backgroundColor: 'black'}} onClick={() => handlePurchase(session.user.email)}>Purchase</button></td>
                 </tr>
             </tfoot>
@@ -71,5 +79,4 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
       );
     }
 
-    return <div>loading...</div>
  }
