@@ -1,13 +1,16 @@
 import { signIn, signOut, useSession } from 'next-auth/client'
+// import { useRef } from 'react'
 import useSWR from 'swr'
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
+
 export default function Page() {
   const [ session, loading ] = useSession()
-  const { data, error } = useSWR(session ? `/api/cart/${session.user.email}/true` : null, fetcher)
+  const { data, error } = useSWR(session ? `/api/cart/${session.user.email}/true` : null, fetcher, { refreshInterval: 1000 })
   if (error) return <div>failed to load</div>
   if (!data && session) return <div>loading...</div>
+
 
   return <>
     {!session && <div className='container'>
@@ -15,7 +18,7 @@ export default function Page() {
       Not signed in <br/>
       <button onClick={() => signIn()}>Sign in</button>
     </div>}
-    {session && data && <div className='container'>
+    {session && <div className='container'>
       Signed in as {session.user.email} <br/>
       <button className='mb-4' onClick={() => signOut()}>Sign out</button>
       <h1>Purchases</h1>
@@ -34,7 +37,7 @@ export default function Page() {
         </thead>
         <tbody>
           <>
-            {typeof data === 'Array' && data.map((item) => {
+            {data && data.length > 0 && data.map((item) => {
               return <tr key={item._id}>
                 <td>{item._id.toString()}</td>
                 <td>{item.team}</td>

@@ -1,6 +1,6 @@
 import useSWR from 'swr'
 import axios from 'axios'
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { signIn, signOut, useSession } from 'next-auth/client'
 import PurchaseModal from '../components/purchaseModal'
 
@@ -8,7 +8,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 
  export default function Cart() {
    const [ session, loading ] = useSession()
-   const { data, error } = useSWR(session ? `/api/cart/${session.user.email}` : null, fetcher, { refreshInterval: 1000 })
+   const { data, error } = useSWR(session ? `/api/cart/${session.user.email}` : null, fetcher, { refreshInterval: 1000, suspense: true })
    const [spinner, setSpinner] = useState(false);
    const [modalShow, setModalShow] = useState(false);
 
@@ -17,7 +17,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
      axios.delete(`/api/cart/${id}`)
       .then((response) => {
         console.log('item deleted')
-        setTimeout(() => setSpinner(false), 2000);
+        setTimeout(() => setSpinner(false), 3000);
       })
       .catch((err) => console.log('unable to delete', err));
     }
@@ -61,7 +61,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
             </thead>
             <tbody>
               <>
-              {typeof data === 'Array' && data.map((item, i) =>
+              {data && data.length > 0 && data.map((item, i) =>
                 <tr key={i}>
                   <td>{item._id.toString()}</td>
                   <td>{item.team}</td>
@@ -83,7 +83,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td>{typeof data === 'Array' && `$${data.reduce((a, b) => a + Number(b.price), 0).toFixed(2)}`}</td>
+                  <td>{data && data.length > 0 && `$${data.reduce((a, b) => a + Number(b.price), 0).toFixed(2)}`}</td>
                   <td><button type="button" className="btn btn-dark" style={{backgroundColor: 'black'}} onClick={() => handlePurchase(session.user.email)}>Purchase</button></td>
                 </tr>
             </tfoot>
